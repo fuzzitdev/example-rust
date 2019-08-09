@@ -1,0 +1,27 @@
+dist: bionic
+language: rust
+rust:
+  - nightly
+
+services:
+  - docker
+
+env:
+  global:
+    # This is FUZZIT_API_KEY. see https://docs.travis-ci.com/user/environment-variables/#encrypting-environment-variables for how to create secrets in Travis.
+    secure: "cInWOLG78+lZXfr6IsAT8CBixXVFdjW2eIS9gJuRWsNlkc8IR3UTzqMP1BaoeEcXIPKGmZALO0oYWi0NueSfKIh0D8RsSb7jCNU76sdPJh1RyJcKIQYWDzTVGj4W/jEq25DupFs8I5HZD/ItAs3vVu7Cl2Yn+Tjh9Gbb/dxEhkt6VvN48uEN1ZtYxKBualZATGHcFSt2Kv8o0cV0gDPg+RapmUmRS+l7XbUl/vlvyrTcbDLtsaftqHIrV0UWtvu13ZKSbG2iT/LIRBsIeSzzVG5C5TzwZMk7ASpDEfcEw4pnjw/KKBIdXiKmYMDl6RrPLRC3+kecyRJhlyfo8fLIEan0Bc8ZVhCEUeavXO9Nk1cMjTgpPuB9H8nbgFR6En5bpFo1VaFSGFiVCHre0p4JY5/tDQVo2An+sC2sJsRXYqo65k33fxyazjLXHH7uLpNAMro5IZGK30QHshsH0aoMGeEtRYlelqhg88P49drcyRCzwy6AA4Tm94Wm4K9fkKgJMpoZ/9JaoeBcIumTmHB+M8DmK86xLDdm8yiVqkz/Ve5jl8yRcdgyUYqOPzmAKNvzggLYh1Bsnx2yq9N+C+jgDJgaUZXV/XWLSfVm3i6NOIH8YfpJ7yoDr22IwZEtcRjLRGjQJyyHcu+ZC6Qm/xzMmpUhRhMXXjQZCOgaKhztc7Y="
+
+jobs:
+  include:
+    - stage: Build, Unit-Tests & Fuzz-Tests
+      go: 1.12.x
+      script:
+        - cargo install cargo-fuzz
+        - ./ci/fuzzit.sh regression
+
+    - stage: Fuzzit (Fuzzing)
+      if: branch = master AND type IN (push)
+      go: 1.12.x
+      script:
+        - cargo install cargo-fuzz
+        - ./ci/fuzzit.sh fuzzing
