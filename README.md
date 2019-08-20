@@ -123,7 +123,7 @@ The best way to integrate with Fuzzit is by adding a two stages in your Continto
 Fuzzing stage:
 
 * Build a fuzz target
-* Wownload `fuzzit` cli
+* Download `fuzzit` cli
 * Authenticate via passing `FUZZIT_API_KEY` environment variable
 * Create a fuzzing job by uploading fuzz target
 
