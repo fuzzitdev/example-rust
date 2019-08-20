@@ -122,15 +122,16 @@ The best way to integrate with Fuzzit is by adding a two stages in your Continto
 
 Fuzzing stage:
 
-* build a fuzz target
-* download `fuzzit` cli
-* authenticate with `fuzzit auth`
-* create a fuzzing job by uploading fuzz target
+* Build a fuzz target
+* Wownload `fuzzit` cli
+* Authenticate via passing `FUZZIT_API_KEY` environment variable
+* Create a fuzzing job by uploading fuzz target
 
 Regression stage
-* build a fuzz target
-* download `fuzzit` cli
-* authenticate with `fuzzit auth`
+* Build a fuzz target
+* Download `fuzzit` cli
+* Authenticate via passing `FUZZIT_API_KEY` environment variable OR defining the corpus as public. This way
+No authentication would be require and regression can be used for [forked PRs](https://docs.travis-ci.com/user/pull-requests#pull-requests-and-security-restrictions) as well
 * create a local regression fuzzing job - This will pull all the generated corpus and run them through
 the fuzzing binary. If new bugs are introduced this will fail the CI and alert
 
@@ -138,10 +139,13 @@ here is the relevant snippet from the [./ci/fuzzit.sh](https://github.com/fuzzit
 which is being run by [.travis.yml](https://github.com/fuzzitdev/example-rust/blob/master/.travis.yml)
 
 ```bash
-wget -q -O fuzzit https://github.com/fuzzitdev/fuzzit/releases/download/v2.0.0/fuzzit_Linux_x86_64
+wget -q -O fuzzit https://github.com/fuzzitdev/fuzzit/releases/download/v2.4.29/fuzzit_Linux_x86_64
 chmod a+x fuzzit
-./fuzzit auth ${FUZZIT_API_KEY}
-./fuzzit create job --type $1 --branch $TRAVIS_BRANCH --revision $TRAVIS_COMMIT $TARGET_ID ./fuzzer
+if [ $1 == "fuzzing" ]; then
+    ./fuzzit create job fuzzitdev/rust-parse-complex ./fuzz/target/x86_64-unknown-linux-gnu/debug/fuzz_parse_complex
+else
+    ./fuzzit create job --type local-regression fuzzitdev/rust-parse-complex ./fuzz/target/x86_64-unknown-linux-gnu/debug/fuzz_parse_complex
+fi
 ``` 
 
 NOTE: In production it is advised to download a pinned version of the [CLI](https://github.com/fuzzitdev/fuzzit)
