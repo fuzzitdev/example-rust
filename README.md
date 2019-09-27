@@ -139,7 +139,7 @@ here is the relevant snippet from the [./ci/fuzzit.sh](https://github.com/fuzzit
 which is being run by [.travis.yml](https://github.com/fuzzitdev/example-rust/blob/master/.travis.yml)
 
 ```bash
-wget -q -O fuzzit https://github.com/fuzzitdev/fuzzit/releases/download/v2.4.29/fuzzit_Linux_x86_64
+wget -q -O https://github.com/fuzzitdev/fuzzit/releases/latest/download/fuzzit_Linux_x86_64
 chmod a+x fuzzit
 if [ $1 == "fuzzing" ]; then
     ./fuzzit create job fuzzitdev/rust-parse-complex ./fuzz/target/x86_64-unknown-linux-gnu/debug/fuzz_parse_complex
