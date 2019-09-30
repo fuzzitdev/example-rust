@@ -148,8 +148,7 @@ else
 fi
 ``` 
 
-NOTE: In production it is advised to download a pinned version of the [CLI](https://github.com/fuzzitdev/fuzzit)
-like in the example. In development you can use latest version:
+NOTE: the url for Fuzzit works as follows (all the relase can be access through github releases)
 https://github.com/fuzzitdev/fuzzit/releases/latest/download/fuzzit_${OS}_${ARCH}.
 Valid values for `${OS}` are: `Linux`, `Darwin`, `Windows`.
 Valid values for `${ARCH}` are: `x86_64` and `i386`.
